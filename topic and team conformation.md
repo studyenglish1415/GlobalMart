@@ -3,6 +3,7 @@
 Team:
 1. 古东云 Team leader, backend
 2. Selim frontend
+3. Tilde
 
 We deciced to choose topic due to its interational importance and our team common experience of using different e-commerce platform both in and outside China.
 

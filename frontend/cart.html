@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cart</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header>
+<h2>GlobalBridge</h2>
+<nav>
+<a href="index.html">Home</a>
+<a href="catalog.html">Catalog</a>
+<a href="cart.html">Cart</a>
+<a href="signup.html">Sign Up</a>
+</nav>
+</header>
+
+<div class="section active">
+<h2>Payment Methods</h2>
+
+<div class="payment-box">
+<img src="images/Visa.png">
+<h3>Visa</h3>
+<input placeholder="Card Number">
+<input placeholder="Expiry Date">
+<input placeholder="Name & Surname">
+<input placeholder="CVV">
+<button onclick="checkout()">Pay</button>
+</div>
+
+<div class="payment-box">
+<img src="images/master.png">
+<h3>MasterCard</h3>
+<input placeholder="Card Number">
+<input placeholder="Expiry Date">
+<input placeholder="Name & Surname">
+<input placeholder="CVV">
+<button onclick="checkout()">Pay</button>
+</div>
+
+<div class="payment-box">
+<img src="images/pay.png">
+<h3>PayPal</h3>
+<input placeholder="Email">
+<input placeholder="Password">
+<button onclick="checkout()">Login & Pay</button>
+</div>
+</div>
+
+<footer>
+<p>24/7 Customer Support • Discounts if delivery delayed</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -29,6 +29,6 @@ API design(core function):
 
 Techstack list:
 Front - Vue.js
-Back - Next.js
+Back - Nuxt.js
 Database - POSTGREsql
 Services: Swagger, Postman, Docker
