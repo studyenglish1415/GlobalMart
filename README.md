@@ -1,4 +1,4 @@
 # GlobalMart
 Simulation platform for cross-border e-commerce website. 
 
-Selim, Petr and Tilda
+Selim, Petr and Tilde
