@@ -1,0 +1,5 @@
+.eslintrc.json
+.eslintignore
+/node_modules
+/dist
+.env
