@@ -1,0 +1,1329 @@
+openapi: 3.0.0
+paths:
+  /products/categories:
+    get:
+      operationId: ProductsController_getCategories
+      summary: Get all product categories
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: &ref_0
+        - Products
+  /products/brands:
+    get:
+      operationId: ProductsController_getBrands
+      summary: Get all product brands
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /products:
+    get:
+      operationId: ProductsController_findAll
+      summary: List products with pagination and filters
+      parameters:
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: search
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: categoryId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: brandId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: sortBy
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: order
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /products/{id}:
+    get:
+      operationId: ProductsController_findById
+      summary: Get product details by ID
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /products/{id}/items:
+    get:
+      operationId: ProductsController_getItems
+      summary: Get product items (variants) by product ID
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /products/{id}/images:
+    get:
+      operationId: ProductsController_getImages
+      summary: Get product images by product ID
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_0
+  /auth/register:
+    post:
+      operationId: AuthController_register
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_1
+        - Authentication
+  /auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_1
+  /auth/me:
+    get:
+      operationId: AuthController_getProfile
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_1
+      security:
+        - access-token: []
+  /auth/refresh:
+    post:
+      operationId: AuthController_refresh
+      summary: Refresh access token using a refresh token
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_1
+  /auth/logout:
+    post:
+      operationId: AuthController_logout
+      summary: Logout and revoke refresh token
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_1
+  /auth/logout-all:
+    post:
+      operationId: AuthController_logoutAll
+      summary: Logout all sessions for current user
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags: *ref_1
+      security:
+        - access-token: []
+  /auth/change-password:
+    post:
+      operationId: AuthController_changePassword
+      summary: Change current user password
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags: *ref_1
+      security:
+        - access-token: []
+  /users:
+    get:
+      operationId: UsersController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: &ref_2
+        - Users
+  /users/me:
+    patch:
+      operationId: UsersController_updateProfile
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_2
+      security:
+        - access-token: []
+  /orders:
+    get:
+      operationId: OrdersController_findAll
+      summary: Get user orders
+      parameters:
+        - name: page
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: limit
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: &ref_3
+        - Orders
+      security: &ref_4
+        - access-token: []
+    post:
+      operationId: OrdersController_create
+      summary: Create new order from cart
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_3
+      security: *ref_4
+  /orders/{id}:
+    get:
+      operationId: OrdersController_findOne
+      summary: Get order details
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+      security: *ref_4
+  /orders/{id}/status-history:
+    get:
+      operationId: OrdersController_getStatusHistory
+      summary: Get order status history
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_3
+      security: *ref_4
+  /cart:
+    get:
+      operationId: CartController_getCart
+      summary: Get user cart
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: &ref_5
+        - Cart
+      security: &ref_6
+        - access-token: []
+    delete:
+      operationId: CartController_clearCart
+      summary: Clear entire cart
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_5
+      security: *ref_6
+  /cart/items:
+    post:
+      operationId: CartController_addItem
+      summary: Add item to cart
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_5
+      security: *ref_6
+  /cart/items/{id}:
+    patch:
+      operationId: CartController_updateItem
+      summary: Update cart item quantity
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCartItemDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_5
+      security: *ref_6
+    delete:
+      operationId: CartController_removeItem
+      summary: Remove item from cart
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_5
+      security: *ref_6
+  /addresses:
+    get:
+      operationId: AddressesController_findAll
+      summary: Get all user addresses
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: &ref_7
+        - Addresses
+      security: &ref_8
+        - access-token: []
+    post:
+      operationId: AddressesController_create
+      summary: Create new address
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddressDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_7
+      security: *ref_8
+  /addresses/{id}:
+    get:
+      operationId: AddressesController_findOne
+      summary: Get address by ID
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_7
+      security: *ref_8
+    patch:
+      operationId: AddressesController_update
+      summary: Update address
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddressDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_7
+      security: *ref_8
+    delete:
+      operationId: AddressesController_delete
+      summary: Delete address
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_7
+      security: *ref_8
+  /reviews/product/{productId}:
+    get:
+      operationId: ReviewsController_findByProduct
+      summary: Get reviews for a product
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: page
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: limit
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: &ref_9
+        - Reviews
+  /reviews/{id}:
+    get:
+      operationId: ReviewsController_findOne
+      summary: Get review details
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_9
+    delete:
+      operationId: ReviewsController_delete
+      summary: Delete review
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_9
+      security:
+        - access-token: []
+  /reviews:
+    post:
+      operationId: ReviewsController_create
+      summary: Create new review
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReviewDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_9
+      security:
+        - access-token: []
+  /coupons/{code}:
+    get:
+      operationId: CouponsController_getByCode
+      summary: Get coupon details
+      parameters:
+        - name: code
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Coupons
+  /payments/methods:
+    get:
+      operationId: PaymentsController_getPaymentMethods
+      summary: Get available payment methods
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: &ref_10
+        - Payments
+  /payments:
+    post:
+      operationId: PaymentsController_createPayment
+      summary: Create payment
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags: *ref_10
+  /admin/products:
+    post:
+      operationId: AdminProductsController_create
+      summary: Create a product
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_11
+        - Admin - Products
+      security: &ref_12
+        - access-token: []
+    get:
+      operationId: AdminProductsController_list
+      summary: Admin list products
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags: *ref_11
+      security: *ref_12
+  /admin/products/{id}:
+    patch:
+      operationId: AdminProductsController_update
+      summary: Update a product
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_11
+      security: *ref_12
+    delete:
+      operationId: AdminProductsController_delete
+      summary: Delete a product
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_11
+      security: *ref_12
+  /admin/brands:
+    post:
+      operationId: AdminBrandsController_create
+      summary: Create a brand
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBrandDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_13
+        - Admin - Brands
+      security: &ref_14
+        - access-token: []
+  /admin/brands/{id}:
+    patch:
+      operationId: AdminBrandsController_update
+      summary: Update a brand
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBrandDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_13
+      security: *ref_14
+    delete:
+      operationId: AdminBrandsController_delete
+      summary: Delete a brand
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_13
+      security: *ref_14
+  /admin/categories:
+    post:
+      operationId: AdminCategoriesController_create
+      summary: Create a category
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCategoryDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_15
+        - Admin - Categories
+      security: &ref_16
+        - access-token: []
+  /admin/categories/{id}:
+    patch:
+      operationId: AdminCategoriesController_update
+      summary: Update a category
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCategoryDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_15
+      security: *ref_16
+    delete:
+      operationId: AdminCategoriesController_delete
+      summary: Delete a category
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_15
+      security: *ref_16
+  /admin/product-items:
+    post:
+      operationId: AdminProductItemsController_create
+      summary: Create a product item (variant)
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductItemDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_17
+        - Admin - Product Items
+      security: &ref_18
+        - access-token: []
+  /admin/product-items/product/{productId}:
+    get:
+      operationId: AdminProductItemsController_listByProduct
+      summary: List product items for a product
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_17
+      security: *ref_18
+  /admin/product-items/{id}:
+    get:
+      operationId: AdminProductItemsController_getOne
+      summary: Get product item by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_17
+      security: *ref_18
+    patch:
+      operationId: AdminProductItemsController_update
+      summary: Update a product item
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductItemDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_17
+      security: *ref_18
+    delete:
+      operationId: AdminProductItemsController_delete
+      summary: Delete a product item
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_17
+      security: *ref_18
+  /admin/product-images:
+    post:
+      operationId: AdminProductImagesController_create
+      summary: Create a product image
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductImageDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_19
+        - Admin - Product Images
+      security: &ref_20
+        - access-token: []
+  /admin/product-images/bulk:
+    post:
+      operationId: AdminProductImagesController_bulkCreate
+      summary: Bulk upload product images
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkCreateImagesDto'
+      responses:
+        '201':
+          description: ''
+      tags: *ref_19
+      security: *ref_20
+  /admin/product-images/{id}:
+    patch:
+      operationId: AdminProductImagesController_update
+      summary: Update a product image
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductImageDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_19
+      security: *ref_20
+    delete:
+      operationId: AdminProductImagesController_delete
+      summary: Delete a product image
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_19
+      security: *ref_20
+    get:
+      operationId: AdminProductImagesController_getOne
+      summary: Get product image by id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_19
+      security: *ref_20
+  /admin/product-images/product/{productId}:
+    get:
+      operationId: AdminProductImagesController_listByProduct
+      summary: List product images for a product
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_19
+      security: *ref_20
+  /admin/attributes:
+    post:
+      operationId: AdminAttributesController_create
+      summary: Create an attribute for a product
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAttributeDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_21
+        - Admin - Attributes
+      security: &ref_22
+        - access-token: []
+  /admin/attributes/{id}:
+    patch:
+      operationId: AdminAttributesController_update
+      summary: Update an attribute
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAttributeDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_21
+      security: *ref_22
+    delete:
+      operationId: AdminAttributesController_delete
+      summary: Delete an attribute
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_21
+      security: *ref_22
+  /admin/attribute-variants:
+    post:
+      operationId: AdminAttributeVariantsController_create
+      summary: Create attribute variant
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAttributeVariantDto'
+      responses:
+        '201':
+          description: ''
+      tags: &ref_23
+        - Admin - Attribute Variants
+      security: &ref_24
+        - access-token: []
+  /admin/attribute-variants/{id}:
+    patch:
+      operationId: AdminAttributeVariantsController_update
+      summary: Update attribute variant
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAttributeVariantDto'
+      responses:
+        '200':
+          description: ''
+      tags: *ref_23
+      security: *ref_24
+    delete:
+      operationId: AdminAttributeVariantsController_delete
+      summary: Delete attribute variant
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_23
+      security: *ref_24
+  /admin/attribute-variants/by-attribute/{attributeId}:
+    get:
+      operationId: AdminAttributeVariantsController_listByAttribute
+      summary: List variants for an attribute
+      parameters:
+        - name: attributeId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags: *ref_23
+      security: *ref_24
+info:
+  title: GlobalMart API
+  description: GlobalMart e-commerce API documentation
+  version: 2.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    access-token:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    RegisterDto:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+      required:
+        - email
+        - password
+        - first_name
+        - last_name
+    LoginDto:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    RefreshTokenDto:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+      required:
+        - refresh_token
+    UpdateUserDto:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+      required:
+        - first_name
+        - last_name
+        - email
+    CreateOrderDto:
+      type: object
+      properties:
+        address_id:
+          type: number
+        payment_method_id:
+          type: number
+        coupon_code:
+          type: string
+      required:
+        - address_id
+        - payment_method_id
+        - coupon_code
+    CartItemDto:
+      type: object
+      properties:
+        product_item_id:
+          type: number
+        quantity:
+          type: number
+      required:
+        - product_item_id
+        - quantity
+    UpdateCartItemDto:
+      type: object
+      properties:
+        quantity:
+          type: number
+      required:
+        - quantity
+    CreateAddressDto:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+      required:
+        - address_line_1
+        - address_line_2
+        - city
+        - postal_code
+        - country
+    UpdateAddressDto:
+      type: object
+      properties:
+        address_line_1:
+          type: string
+        address_line_2:
+          type: string
+        city:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+      required:
+        - address_line_1
+        - address_line_2
+        - city
+        - postal_code
+        - country
+    CreateReviewDto:
+      type: object
+      properties:
+        product_id:
+          type: number
+        rating:
+          type: number
+        comment:
+          type: string
+      required:
+        - product_id
+        - rating
+        - comment
+    CreateProductDto:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        brand_id:
+          type: number
+        category_id:
+          type: number
+        active:
+          type: boolean
+        currency:
+          type: string
+      required:
+        - name
+        - description
+        - brand_id
+        - category_id
+        - active
+        - currency
+    UpdateProductDto:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        brand_id:
+          type: number
+        category_id:
+          type: number
+        active:
+          type: boolean
+        currency:
+          type: string
+      required:
+        - name
+        - description
+        - brand_id
+        - category_id
+        - active
+        - currency
+    CreateBrandDto:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+      required:
+        - name
+        - country
+    UpdateBrandDto:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+      required:
+        - name
+        - country
+    CreateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+        parent_id:
+          type: number
+      required:
+        - name
+        - parent_id
+    UpdateCategoryDto:
+      type: object
+      properties:
+        name:
+          type: string
+        parent_id:
+          type: number
+      required:
+        - name
+        - parent_id
+    CreateProductItemDto:
+      type: object
+      properties:
+        product_id:
+          type: number
+        sku:
+          type: string
+        price:
+          type: number
+        weight:
+          type: number
+      required:
+        - product_id
+        - sku
+        - price
+        - weight
+    UpdateProductItemDto:
+      type: object
+      properties:
+        sku:
+          type: string
+        price:
+          type: number
+        weight:
+          type: number
+      required:
+        - sku
+        - price
+        - weight
+    CreateProductImageDto:
+      type: object
+      properties:
+        product_id:
+          type: number
+        image_url:
+          type: string
+      required:
+        - product_id
+        - image_url
+    BulkCreateImagesDto:
+      type: object
+      properties:
+        product_id:
+          type: number
+        image_urls:
+          type: array
+          items:
+            type: string
+      required:
+        - product_id
+        - image_urls
+    UpdateProductImageDto:
+      type: object
+      properties:
+        image_url:
+          type: string
+      required:
+        - image_url
+    CreateAttributeDto:
+      type: object
+      properties:
+        product_id:
+          type: number
+        name:
+          type: string
+      required:
+        - product_id
+        - name
+    UpdateAttributeDto:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+    CreateAttributeVariantDto:
+      type: object
+      properties:
+        attribute_id:
+          type: number
+        value:
+          type: string
+      required:
+        - attribute_id
+        - value
+    UpdateAttributeVariantDto:
+      type: object
+      properties:
+        value:
+          type: string
+      required:
+        - value
