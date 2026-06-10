@@ -1,9 +1,16 @@
 <template>
   <div class="container">
     <div class="search-header">
-      <input type="text" v-model="searchQuery" placeholder="Search products..." @keyup.enter="performSearch" />
+      <input
+        type="text"
+        v-model="searchQuery"
+        placeholder="Search products..."
+        @keyup.enter="performSearch"
+      />
       <button @click="performSearch">Search</button>
-      <button class="filter-btn" @click="showFilter = !showFilter">Filter {{ showFilter ? '▲' : '▼' }}</button>
+      <button class="filter-btn" @click="showFilter = !showFilter">
+        Filter {{ showFilter ? '▲' : '▼' }}
+      </button>
     </div>
 
     <transition name="slide">
@@ -28,16 +35,24 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ProductCard from '@/components/ProductCard.vue'
 
+interface Product {
+  id: number
+  name: string
+  price: number
+  image: string
+  rating: number
+}
+
 const route = useRoute()
 const router = useRouter()
-const searchQuery = ref(route.query.q || '')
+const searchQuery = ref((route.query.q as string) || '')
 const showFilter = ref(false)
-const allProducts = ref([])
+const allProducts = ref<Product[]>([])
 
 const filteredProducts = computed(() => {
   if (!searchQuery.value.trim()) return allProducts.value
@@ -52,7 +67,9 @@ const performSearch = () => {
   }
 }
 
-watch(() => route.query.q, (q) => { searchQuery.value = q || '' })
+watch(() => route.query.q, (newQ) => {
+  searchQuery.value = (newQ as string) || ''
+})
 
 onMounted(() => {
   allProducts.value = [
@@ -77,21 +94,38 @@ onMounted(() => {
 
 <style scoped>
 .container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
+
 .search-header { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.search-header input { flex: 1; min-width: 200px; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px; }
+.search-header input {
+  flex: 1; min-width: 200px; padding: 12px 16px;
+  border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem; outline: none;
+}
 .search-header input:focus { border-color: #ff6b6b; }
-.search-header button { padding: 12px 24px; background: #ff6b6b; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; }
+.search-header button {
+  padding: 12px 24px; background: #ff6b6b; color: white;
+  border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: background 0.2s;
+}
 .search-header button:hover { background: #e95c5c; }
 .filter-btn { background: #f1f5f9 !important; color: #374151 !important; }
-.filter-panel { background: #f8fafc; padding: 16px 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+.filter-btn:hover { background: #e2e8f0 !important; }
+
+.filter-panel {
+  background: #f8fafc; padding: 16px 20px;
+  border-radius: 10px; margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
 .filter-panel h4 { margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
-.badge-future { background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 2px 8px; border-radius: 20px; }
+.badge-future { background: #e0f2fe; color: #0369a1; font-size: 0.72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
 .filter-panel p { color: #64748b; font-size: 0.9rem; }
-.results-info { margin-bottom: 20px; color: #64748b; }
+
+.results-info { margin-bottom: 20px; color: #64748b; font-size: 0.95rem; }
+
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+
 .no-results { text-align: center; padding: 80px 20px; color: #64748b; }
 .no-results div { font-size: 48px; margin-bottom: 16px; }
 .no-results a { color: #ff6b6b; font-weight: 600; text-decoration: none; }
+
 .slide-enter-active, .slide-leave-active { transition: all 0.2s ease; }
 .slide-enter-from, .slide-leave-to { opacity: 0; transform: translateY(-8px); }
 </style>
