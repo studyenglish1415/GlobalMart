@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -30,6 +30,7 @@ const authStore = useAuthStore()
 const handleLogin = async () => {
   loading.value = true
   error.value = ''
+  // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 600))
   if (email.value && password.value) {
     authStore.setToken('fake-jwt-token')
