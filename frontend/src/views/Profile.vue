@@ -37,17 +37,56 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 
-const user = ref({ firstName: 'John', lastName: 'Doe', nickname: 'johnd', email: 'john@example.com', phone: '+86 123 4567 8900' })
-const addresses = ref([{ id: 1, line: '123 Main St, Beijing' }, { id: 2, line: '456 Nanjing Rd, Shanghai' }])
-const orders = ref([{ id: 1001, total: 799, status: 'Delivered' }, { id: 1002, total: 299, status: 'Shipped' }, { id: 1003, total: 4999, status: 'Processing' }])
+interface UserProfile {
+  firstName: string
+  lastName: string
+  nickname: string
+  email: string
+  phone: string
+}
+
+interface Address {
+  id: number
+  line: string
+}
+
+interface Order {
+  id: number
+  total: number
+  status: string
+}
+
+const user = ref<UserProfile>({
+  firstName: 'John',
+  lastName: 'Doe',
+  nickname: 'johnd',
+  email: 'john@example.com',
+  phone: '+86 123 4567 8900'
+})
+
+const addresses = ref<Address[]>([
+  { id: 1, line: '123 Main St, Beijing' },
+  { id: 2, line: '456 Nanjing Rd, Shanghai' }
+])
+
+const orders = ref<Order[]>([
+  { id: 1001, total: 799, status: 'Delivered' },
+  { id: 1002, total: 299, status: 'Shipped' },
+  { id: 1003, total: 4999, status: 'Processing' }
+])
+
 const savedMsg = ref(false)
 
 const initials = computed(() => (user.value.firstName[0] + user.value.lastName[0]).toUpperCase())
 
-const saveProfile = () => { savedMsg.value = true; setTimeout(() => { savedMsg.value = false }, 3000) }
+const saveProfile = () => {
+  savedMsg.value = true
+  setTimeout(() => { savedMsg.value = false }, 3000)
+}
+
 const forgotPassword = () => alert('Password reset link sent to your email (simulated)')
 </script>
 
