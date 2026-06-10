@@ -15,13 +15,21 @@
           <div class="variant-group">
             <label>Color</label>
             <div class="options">
-              <button v-for="color in colors" :key="color" :class="['option-btn', { active: selectedColor === color }]" @click="selectedColor = color">{{ color }}</button>
+              <button
+                v-for="color in colors" :key="color"
+                :class="['option-btn', { active: selectedColor === color }]"
+                @click="selectedColor = color"
+              >{{ color }}</button>
             </div>
           </div>
           <div class="variant-group">
             <label>Size</label>
             <div class="options">
-              <button v-for="size in sizes" :key="size" :class="['option-btn', { active: selectedSize === size }]" @click="selectedSize = size">{{ size }}</button>
+              <button
+                v-for="size in sizes" :key="size"
+                :class="['option-btn', { active: selectedSize === size }]"
+                @click="selectedSize = size"
+              >{{ size }}</button>
             </div>
           </div>
         </div>
@@ -53,14 +61,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 
+interface ProductDetail {
+  id: number
+  name: string
+  price: number
+  image: string
+  rating: number
+  description: string
+}
+
 const route = useRoute()
 const cartStore = useCartStore()
-const product = ref(null)
+const product = ref<ProductDetail | null>(null)
 const selectedColor = ref('Black')
 const selectedSize = ref('M')
 const quantity = ref(1)
@@ -69,7 +86,7 @@ const addedToCart = ref(false)
 const colors = ['Red', 'Blue', 'Black', 'White']
 const sizes = ['S', 'M', 'L', 'XL']
 
-const products = {
+const products: Record<number, ProductDetail> = {
   1: { id: 1, name: 'BMW Series 3', price: 35999, image: '/images/BMW_SERIES_3.jpg', description: 'Luxury sedan with sporty performance and advanced tech.', rating: 4.8 },
   2: { id: 2, name: 'BMW Series 5', price: 48999, image: '/images/BMW_SERIES_5.jpg', description: 'Executive business sedan with premium interior.', rating: 4.9 },
   3: { id: 3, name: 'BMW X3', price: 42999, image: '/images/BMW_X3.jpg', description: 'Compact luxury SUV with all-wheel drive.', rating: 4.7 },
@@ -88,7 +105,7 @@ const products = {
 }
 
 const fetchProduct = () => {
-  const id = parseInt(route.params.id)
+  const id = parseInt(route.params.id as string)
   product.value = products[id] || null
 }
 
@@ -96,12 +113,17 @@ const incrementQty = () => quantity.value++
 const decrementQty = () => { if (quantity.value > 1) quantity.value-- }
 
 const addToCart = () => {
-  cartStore.addItem(product.value, quantity.value)
-  addedToCart.value = true
-  setTimeout(() => { addedToCart.value = false }, 2000)
+  if (product.value) {
+    cartStore.addItem(product.value, quantity.value)
+    addedToCart.value = true
+    setTimeout(() => { addedToCart.value = false }, 2000)
+  }
 }
 
-const onImgError = (e) => { e.target.src = 'https://placehold.co/400x400?text=No+Image' }
+const onImgError = (e: Event) => {
+  const target = e.target as HTMLImageElement
+  target.src = 'https://placehold.co/400x400?text=No+Image'
+}
 
 onMounted(fetchProduct)
 </script>
