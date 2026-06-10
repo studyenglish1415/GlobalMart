@@ -33,10 +33,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useCartStore } from '@/stores/cart'
+
 const cartStore = useCartStore()
-const onImgError = (e) => { e.target.src = 'https://placehold.co/60x60?text=?' }
+
+const onImgError = (e: Event) => {
+  const target = e.target as HTMLImageElement
+  target.src = 'https://placehold.co/60x60?text=?'
+}
 </script>
 
 <style scoped>
