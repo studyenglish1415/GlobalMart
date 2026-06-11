@@ -14,8 +14,12 @@ export class AdminProductsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a product' })
-  async create(@Body() dto: CreateProductDto) {
-    return this.productsService.createProduct(dto as any);
+  async create(@Body() body: any) {
+    // coerce incoming values from the admin UI (strings) into proper types
+    if (body.active !== undefined) body.active = (body.active === 'true' || body.active === true);
+    if (body.brand_id !== undefined) body.brand_id = body.brand_id ? Number(body.brand_id) : undefined;
+    if (body.category_id !== undefined) body.category_id = body.category_id ? Number(body.category_id) : undefined;
+    return this.productsService.createProduct(body as any);
   }
 
   @Get()
@@ -26,10 +30,19 @@ export class AdminProductsController {
     return this.productsService.adminListProducts(page, limit);
   }
 
+  @Get(':id')
+  @ApiOperation({ summary: 'Get product by id' })
+  async get(@Param('id') id: number) {
+    return this.productsService.findById(Number(id));
+  }
+
   @Patch(':id')
   @ApiOperation({ summary: 'Update a product' })
-  async update(@Param('id') id: number, @Body() dto: UpdateProductDto) {
-    return this.productsService.updateProduct(Number(id), dto as any);
+  async update(@Param('id') id: number, @Body() body: any) {
+    if (body.active !== undefined) body.active = (body.active === 'true' || body.active === true);
+    if (body.brand_id !== undefined) body.brand_id = body.brand_id ? Number(body.brand_id) : undefined;
+    if (body.category_id !== undefined) body.category_id = body.category_id ? Number(body.category_id) : undefined;
+    return this.productsService.updateProduct(Number(id), body as any);
   }
 
   @Delete(':id')

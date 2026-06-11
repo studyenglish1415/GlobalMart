@@ -9,6 +9,7 @@ import { ProductItem } from '../../database/entities/product-item.entity';
 import { ProductImage } from '../../database/entities/product-image.entity';
 import { Attribute } from '../../database/entities/attribute.entity';
 import { AttributeVariant } from '../../database/entities/attribute-variant.entity';
+import { Coupon } from '../../database/entities/coupon.entity';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AttributeVariant } from '../../database/entities/attribute-variant.enti
       ProductImage,
       Attribute,
       AttributeVariant,
+      Coupon,
     ]),
   ],
   controllers: [ProductsController],

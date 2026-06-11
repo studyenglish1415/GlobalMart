@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GlobalMart Admin</title>
+  <link rel="stylesheet" href="/admin/style.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>GlobalMart Admin</h1>
+      <div class="auth">
+        <input id="token" placeholder="Paste JWT token (optional)" />
+        <button id="set-token">Set Token</button>
+      </div>
+      <div class="controls">
+        <input id="search" placeholder="Search current list" />
+        <button id="search-btn">Search</button>
+        <label for="page-size">Page size</label>
+        <select id="page-size">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        <button id="prev-page">Prev</button>
+        <span id="page-info">1</span>
+        <button id="next-page">Next</button>
+      </div>
+    </header>
+
+    <nav>
+      <button data-view="users" class="active">Users</button>
+      <button data-view="products">Products</button>
+      <button data-view="brands">Brands</button>
+      <button data-view="categories">Categories</button>
+      <button data-view="coupons">Coupons</button>
+      <button data-view="attributes">Attributes</button>
+      <button data-view="attribute-variants">Attribute Variants</button>
+      <button data-view="addresses">Addresses</button>
+      <button data-view="reviews">Reviews</button>
+      <button data-view="orders">Orders</button>
+      <button data-view="coupon-usages">Coupon Usages</button>
+      <button data-view="carts">Carts</button>
+      <button data-view="cart-items">Cart Items</button>
+      <button data-view="payments">Payments</button>
+      <button data-view="payment-methods">Payment Methods</button>
+      <button data-view="order-status">Order Status History</button>
+      <button data-view="order-items">Order Items</button>
+      <button data-view="refunds">Refunds</button>
+      <button data-view="review-images">Review Images</button>
+      <button data-view="user-sessions">User Sessions</button>
+    </nav>
+
+    <main>
+      <section id="list"></section>
+      <section id="detail" style="display:none"></section>
+    </main>
+
+    <footer>
+      <small>Minimal admin UI — CRUD powered by backend API</small>
+    </footer>
+  </div>
+
+  <script src="/admin/app.js"></script>
+</body>
+</html>

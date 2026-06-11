@@ -40,6 +40,10 @@ export class UsersService {
     return this.usersRepo.findOne({ where: { id } });
   }
 
+  async deleteUser(id: number) {
+    return this.usersRepo.delete({ id });
+  }
+
   async findAll(): Promise<User[]> {
     return this.usersRepo.find();
   }

@@ -2,6 +2,9 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { join } from 'path';
+// AdminJS imports are required at runtime to avoid TS/ESM resolution issues
+// We'll load them dynamically so the compiled CommonJS code runs correctly.
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +15,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
+      transformOptions: { enableImplicitConversion: true },
     })
   );
 
@@ -49,6 +53,25 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // Serve custom admin static UI from `public/admin` at /admin
+  try {
+    const expressStatic = require('express').static;
+    const adminStaticPath = join(__dirname, '..', 'public', 'admin');
+    (app as any).use('/admin', expressStatic(adminStaticPath));
+    console.log(`📁 Serving admin UI from ${adminStaticPath} at /admin`);
+  } catch (err) {
+    console.warn('Failed to mount admin static assets:', err && err.message ? err.message : err);
+  }
+  // Serve uploaded files
+  try {
+    const expressStatic = require('express').static;
+    const uploadsPath = join(__dirname, '..', 'public', 'uploads');
+    (app as any).use('/uploads', expressStatic(uploadsPath));
+    console.log(`📁 Serving uploads from ${uploadsPath} at /uploads`);
+  } catch (err) {
+    console.warn('Failed to mount uploads static assets:', err && err.message ? err.message : err);
+  }
 
   const port = process.env.PORT || 3000;
   await app.listen(port, () => {

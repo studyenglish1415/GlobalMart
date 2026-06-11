@@ -198,3 +198,25 @@ For more information:
 - [NestJS Documentation](https://docs.nestjs.com)
 - [TypeORM Documentation](https://typeorm.io)
 - [Swagger UI Guide](https://swagger.io/tools/swagger-ui/)
+
+## Admin Panel (no-code CRUD)
+
+You can run an admin UI to perform CRUD operations on all TypeORM entities without writing code using AdminJS.
+
+1. Install additional packages in the `backend` folder:
+```bash
+cd backend
+npm install adminjs @adminjs/express @adminjs/typeorm
+```
+
+2. Start the backend in development:
+```bash
+npm run start:dev
+```
+
+3. Visit the admin UI at `http://localhost:3000/admin` (adjust port if you changed `PORT`).
+
+Notes:
+- The admin automatically registers all entities exported from `src/database/entities/index.ts`.
+- AdminJS runs on top of the Express instance used by Nest; you may secure the `/admin` route (e.g., with auth guards or middleware) for production.
+- If you prefer more customization, you can add resource-specific `options` when registering resources in `src/main.ts`.

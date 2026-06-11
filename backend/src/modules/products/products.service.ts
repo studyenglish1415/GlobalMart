@@ -8,6 +8,7 @@ import { ProductItem } from '../../database/entities/product-item.entity';
 import { ProductImage } from '../../database/entities/product-image.entity';
 import { Attribute } from '../../database/entities/attribute.entity';
 import { AttributeVariant } from '../../database/entities/attribute-variant.entity';
+import { Coupon } from '../../database/entities/coupon.entity';
 import { ProductQueryDto } from './dto/product-query.dto';
 
 @Injectable()
@@ -27,7 +28,13 @@ export class ProductsService {
     private attributesRepo: Repository<Attribute>,
     @InjectRepository(AttributeVariant)
     private variantsRepo: Repository<AttributeVariant>
+    ,
+    @InjectRepository(Coupon)
+    private couponsRepo: Repository<Coupon>
   ) {}
+
+  // Coupons repository will be injected lazily by Nest via ProductsModule if configured
+
 
   async findAll(query: ProductQueryDto) {
     const {
@@ -187,6 +194,14 @@ export class ProductsService {
     return this.attributesRepo.delete({ id });
   }
 
+  async listAttributes() {
+    return this.attributesRepo.find();
+  }
+
+  async getAttribute(id: number) {
+    return this.attributesRepo.findOne({ where: { id } });
+  }
+
   // Attribute variants
   async createAttributeVariant(data: Partial<AttributeVariant>) {
     const v = this.variantsRepo.create(data as any);
@@ -200,6 +215,37 @@ export class ProductsService {
 
   async deleteAttributeVariant(id: number) {
     return this.variantsRepo.delete({ id });
+  }
+
+  async listAttributeVariants() {
+    return this.variantsRepo.find();
+  }
+
+  async getAttributeVariant(id: number) {
+    return this.variantsRepo.findOne({ where: { id } });
+  }
+
+  // Coupons
+  async listCoupons() {
+    return this.couponsRepo.find();
+  }
+
+  async getCoupon(id: number) {
+    return this.couponsRepo.findOne({ where: { id } });
+  }
+
+  async createCoupon(data: Partial<Coupon>) {
+    const c = this.couponsRepo.create(data as any);
+    return this.couponsRepo.save(c);
+  }
+
+  async updateCoupon(id: number, data: Partial<Coupon>) {
+    await this.couponsRepo.update(id, data as any);
+    return this.couponsRepo.findOne({ where: { id } });
+  }
+
+  async deleteCoupon(id: number) {
+    return this.couponsRepo.delete({ id });
   }
 
   // Bulk create images

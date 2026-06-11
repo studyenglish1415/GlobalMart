@@ -101,6 +101,32 @@ export class OrdersService {
     });
   }
 
+  // Admin helpers
+  async adminListOrders(page: number = 1, limit: number = 50) {
+    const skip = (page - 1) * limit;
+    const [orders, total] = await this.orderRepo.findAndCount({
+      relations: ['order_items', 'payments', 'user'],
+      skip,
+      take: limit,
+      order: { created_at: 'DESC' },
+    });
+    return { orders, total, page, limit, pages: Math.ceil(total / limit) };
+  }
+
+  async findByIdAdmin(id: number) {
+    const order = await this.orderRepo.findOne({
+      where: { id },
+      relations: ['order_items', 'payments', 'status_history', 'user'],
+    });
+    if (!order) throw new NotFoundException('Order not found');
+    return order;
+  }
+
+  async updateOrder(id: number, data: Partial<Order>) {
+    await this.orderRepo.update(id, data as any);
+    return this.orderRepo.findOne({ where: { id } });
+  }
+
   private async addStatusHistory(
     orderId: number,
     status: string,

@@ -45,4 +45,29 @@ export class AddressesService {
     const address = await this.findById(id, userId);
     return this.addressRepo.remove(address);
   }
+
+  // Admin helpers
+  async listAll(page = 1, limit = 50) {
+    const skip = (page - 1) * limit;
+    const [items, total] = await this.addressRepo.findAndCount({ skip, take: limit });
+    return { items, total, page, limit, pages: Math.ceil(total / limit) };
+  }
+
+  async getById(id: number) {
+    return this.addressRepo.findOne({ where: { id } });
+  }
+
+  async createGlobal(data: Partial<Address>) {
+    const a = this.addressRepo.create(data as any);
+    return this.addressRepo.save(a);
+  }
+
+  async updateGlobal(id: number, data: Partial<Address>) {
+    await this.addressRepo.update(id, data as any);
+    return this.addressRepo.findOne({ where: { id } });
+  }
+
+  async deleteGlobal(id: number) {
+    return this.addressRepo.delete({ id });
+  }
 }

@@ -1,8 +1,7 @@
-import { Controller, Post, Body, UseGuards, Patch, Param, Delete, Get } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { ProductsService } from '../products/products.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
-import { CreateAttributeVariantDto, UpdateAttributeVariantDto } from '../products/dto/attribute-variant.dto';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @ApiTags('Admin - Attribute Variants')
@@ -12,16 +11,28 @@ import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 export class AdminAttributeVariantsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Get()
+  @ApiOperation({ summary: 'List attribute variants' })
+  async list() {
+    return this.productsService.listAttributeVariants();
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create attribute variant' })
-  async create(@Body() dto: CreateAttributeVariantDto) {
-    return this.productsService.createAttributeVariant(dto as any);
+  async create(@Body() body: any) {
+    return this.productsService.createAttributeVariant(body as any);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get attribute variant' })
+  async get(@Param('id') id: number) {
+    return this.productsService.getAttributeVariant(Number(id));
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update attribute variant' })
-  async update(@Param('id') id: number, @Body() dto: UpdateAttributeVariantDto) {
-    return this.productsService.updateAttributeVariant(Number(id), dto as any);
+  async update(@Param('id') id: number, @Body() body: any) {
+    return this.productsService.updateAttributeVariant(Number(id), body as any);
   }
 
   @Delete(':id')
@@ -29,10 +40,5 @@ export class AdminAttributeVariantsController {
   async delete(@Param('id') id: number) {
     return this.productsService.deleteAttributeVariant(Number(id));
   }
-
-  @Get('by-attribute/:attributeId')
-  @ApiOperation({ summary: 'List variants for an attribute' })
-  async listByAttribute(@Param('attributeId') attributeId: number) {
-    return this.productsService.listVariantsByAttribute(Number(attributeId));
-  }
 }
+

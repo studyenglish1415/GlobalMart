@@ -1,4 +1,5 @@
 import { Controller, Post, Body, UseGuards, Patch, Param, Delete } from '@nestjs/common';
+import { Get } from '@nestjs/common';
 import { ProductsService } from '../products/products.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
@@ -11,6 +12,18 @@ import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 @ApiBearerAuth('access-token')
 export class AdminCategoriesController {
   constructor(private readonly productsService: ProductsService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'List categories' })
+  async list() {
+    return this.productsService.getCategories();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get category by id' })
+  async get(@Param('id') id: number) {
+    return this.productsService.getCategories().then(cs => cs.find(c => c.id === Number(id)));
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create a category' })
